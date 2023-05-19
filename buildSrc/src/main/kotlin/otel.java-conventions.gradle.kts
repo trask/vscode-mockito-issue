@@ -1,20 +1,8 @@
-import com.gradle.enterprise.gradleplugin.testretry.retry
-import io.opentelemetry.gradle.OtelJavaExtension
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
   `java-library`
-  jacoco
-
-  id("otel.errorprone-conventions")
-  id("otel.spotless-conventions")
 }
-
-val otelJava = extensions.create<OtelJavaExtension>("otelJava")
-
-group = "io.opentelemetry.contrib"
-
-base.archivesName.set("opentelemetry-${project.name}")
 
 java {
   toolchain {
@@ -66,56 +54,6 @@ tasks {
       showExceptions = true
       showCauses = true
       showStackTraces = true
-    }
-
-    retry {
-      // You can see tests that were retried by this mechanism in the collected test reports and build scans.
-      if (System.getenv().containsKey("CI") || rootProject.hasProperty("retryTests")) {
-        maxRetries.set(5)
-      }
-    }
-  }
-
-  withType<Javadoc>().configureEach {
-    exclude("io/opentelemetry/**/internal/**")
-
-    with(options as StandardJavadocDocletOptions) {
-      source = "8"
-      encoding = "UTF-8"
-      docEncoding = "UTF-8"
-      breakIterator(true)
-
-      addBooleanOption("html5", true)
-
-      // TODO (trask) revisit to see if url is fixed
-      // currently broken because https://docs.oracle.com/javase/8/docs/api/element-list is missing
-      // and redirects
-      // links("https://docs.oracle.com/javase/8/docs/api/")
-
-      addBooleanOption("Xdoclint:all,-missing", true)
-    }
-  }
-}
-
-// Add version information to published artifacts.
-plugins.withId("otel.publish-conventions") {
-  tasks {
-    register("generateVersionResource") {
-      val moduleName = otelJava.moduleName
-      val propertiesDir = moduleName.map { File(buildDir, "generated/properties/${it.replace('.', '/')}") }
-
-      inputs.property("project.version", project.version.toString())
-      outputs.dir(propertiesDir)
-
-      doLast {
-        File(propertiesDir.get(), "version.properties").writeText("contrib.version=${project.version}")
-      }
-    }
-  }
-
-  sourceSets {
-    main {
-      output.dir("$buildDir/generated/properties", "builtBy" to "generateVersionResource")
     }
   }
 }

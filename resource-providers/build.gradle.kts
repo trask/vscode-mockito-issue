@@ -1,10 +1,6 @@
 plugins {
   id("otel.java-conventions")
-  id("otel.publish-conventions")
 }
-
-description = "Contributed ResourceProviders"
-otelJava.moduleName.set("io.opentelemetry.contrib.resourceproviders")
 
 dependencies {
   annotationProcessor("com.google.auto.service:auto-service")
