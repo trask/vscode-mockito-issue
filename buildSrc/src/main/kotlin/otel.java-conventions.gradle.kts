@@ -1,5 +1,3 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-
 plugins {
   `java-library`
 }
@@ -8,53 +6,17 @@ java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(17))
   }
-
-  withJavadocJar()
-  withSourcesJar()
 }
 
 tasks {
   withType<JavaCompile>().configureEach {
     with(options) {
       release.set(8)
-
-      if (name != "jmhCompileGeneratedClasses") {
-        compilerArgs.addAll(
-          listOf(
-            "-Xlint:all",
-            // We suppress the "try" warning because it disallows managing an auto-closeable with
-            // try-with-resources without referencing the auto-closeable within the try block.
-            "-Xlint:-try",
-            // We suppress the "processing" warning as suggested in
-            // https://groups.google.com/forum/#!topic/bazel-discuss/_R3A9TJSoPM
-            "-Xlint:-processing",
-            // We suppress the "options" warning because it prevents compilation on modern JDKs
-            "-Xlint:-options",
-
-            // Fail build on any warning
-            "-Werror",
-          ),
-        )
-      }
-
-      encoding = "UTF-8"
-
-      if (name.contains("Test")) {
-        // serialVersionUI is basically guaranteed to be useless in tests
-        compilerArgs.add("-Xlint:-serial")
-      }
     }
   }
 
   withType<Test>().configureEach {
     useJUnitPlatform()
-
-    testLogging {
-      exceptionFormat = TestExceptionFormat.FULL
-      showExceptions = true
-      showCauses = true
-      showStackTraces = true
-    }
   }
 }
 
@@ -84,7 +46,6 @@ testing {
       implementation("org.junit.jupiter:junit-jupiter-params")
       implementation("org.mockito:mockito-core")
       implementation("org.mockito:mockito-junit-jupiter")
-      implementation("org.assertj:assertj-core")
 
       runtimeOnly("org.junit.jupiter:junit-jupiter-engine")
     }

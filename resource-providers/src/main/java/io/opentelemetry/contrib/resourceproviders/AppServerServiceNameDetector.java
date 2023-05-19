@@ -8,10 +8,7 @@ public class AppServerServiceNameDetector {
         this.appServer = appServer;
     }
 
-    public String detect() {
-        if (appServer.getServerClass() == null) {
-            return null;
-        }
-        return "";
+    public String getName() {
+        return appServer.getName();
     }
 }
