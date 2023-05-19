@@ -73,9 +73,6 @@ dependencies {
       }
     }
   }
-
-  compileOnly("com.google.code.findbugs:jsr305")
-  compileOnly("com.google.errorprone:error_prone_annotations")
 }
 
 testing {
@@ -83,17 +80,11 @@ testing {
     dependencies {
       implementation(project(project.path))
 
-      compileOnly("com.google.auto.value:auto-value-annotations")
-      compileOnly("com.google.errorprone:error_prone_annotations")
-      compileOnly("com.google.code.findbugs:jsr305")
-
       implementation("org.junit.jupiter:junit-jupiter-api")
       implementation("org.junit.jupiter:junit-jupiter-params")
       implementation("org.mockito:mockito-core")
       implementation("org.mockito:mockito-junit-jupiter")
       implementation("org.assertj:assertj-core")
-      implementation("org.awaitility:awaitility")
-      implementation("io.github.netmikey.logunit:logunit-jul")
 
       runtimeOnly("org.junit.jupiter:junit-jupiter-engine")
     }

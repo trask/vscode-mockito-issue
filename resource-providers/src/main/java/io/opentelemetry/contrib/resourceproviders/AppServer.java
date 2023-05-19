@@ -6,7 +6,6 @@
 package io.opentelemetry.contrib.resourceproviders;
 
 import java.nio.file.Path;
-import javax.annotation.Nullable;
 
 /**
  * An interface that represents a single kind of application server and its specific configuration.
@@ -14,14 +13,12 @@ import javax.annotation.Nullable;
 interface AppServer {
 
   /** Path to directory to be scanned for deployments. */
-  @Nullable
   Path getDeploymentDir() throws Exception;
 
   /**
    * Returns a single class that, when present, determines that the given application server is
    * active/running.
    */
-  @Nullable
   Class<?> getServerClass();
 
   /**
@@ -38,7 +35,7 @@ interface AppServer {
   }
 
   /** Use to ignore default applications that are bundled with the app server. */
-  default boolean isValidResult(Path path, @Nullable String result) {
+  default boolean isValidResult(Path path, String result) {
     return true;
   }
 }
