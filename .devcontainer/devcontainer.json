@@ -18,6 +18,7 @@
 				"java.server.launchMode": "Standard"
 			}
 		}
-	},
-	"postCreateCommand": "./gradlew build --no-daemon"
+	}
+	// causes conflicts with two gradles running at same time during codespaces init
+	//"postCreateCommand": "./gradlew build --no-daemon"
 }
