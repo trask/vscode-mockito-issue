@@ -19,5 +19,5 @@
 			}
 		}
 	},
-	"postCreateCommand": "./gradlew build"
+	"postCreateCommand": "./gradlew build --no-daemon"
 }
